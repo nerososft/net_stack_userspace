@@ -1,0 +1,7 @@
+executable("net") {
+  sources = [ 
+    "net/src/main.c",
+  ]
+  libs = []
+  deps = []
+}

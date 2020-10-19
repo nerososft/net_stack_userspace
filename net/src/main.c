@@ -1,3 +1,5 @@
+#include "../include/ether.h"
+#include <arpa/inet.h>
 #include <fcntl.h>
 #include <linux/if.h>
 #include <linux/if_tun.h>
@@ -13,13 +15,13 @@ int tun_open(char *dev) {
     struct ifreq ifr;
     int fd, err;
 
-    if ((fd = open("/dev/net/tun", O_RDWR)) == -1) {
+    if ((fd = open("/dev/net/tap", O_RDWR)) == -1) {
         printf("unable to open tun/tap device\n");
         return fd;
     }
 
     memset(&ifr, 0, sizeof(ifr));
-    ifr.ifr_ifru.ifru_flags = IFF_TUN | IFF_NO_PI;
+    ifr.ifr_ifru.ifru_flags = IFF_TAP | IFF_NO_PI;
     if (*dev) {
         strncpy(ifr.ifr_ifrn.ifrn_name, dev, IFNAMSIZ);
     }
@@ -41,6 +43,17 @@ int main() {
     printf("Device tun0 opened\n");
     while (1) {
         nbytes = read(fd, buf, sizeof(buf));
-        printf("Read %zd bytes from tun0\n", nbytes);
+        printf("Read %zd bytes from tun0:\n[ ", nbytes);
+        for (int i = 0; i < nbytes; i++) {
+            printf("%d, ", buf[i]);
+        }
+        printf("]\n");
+        struct eth_hdr *hdr = (struct eth_hdr *) buf;
+        printf("Ether Header:\n");
+        printf("dest_mac: %d:%d:%d:%d:%d:%d\n", hdr->dest_mac[0], hdr->dest_mac[1], hdr->dest_mac[2], hdr->dest_mac[3], hdr->dest_mac[4], hdr->dest_mac[5]);
+        printf("src_mac: %d:%d:%d:%d:%d:%d\n", hdr->src_mac[0], hdr->src_mac[1], hdr->src_mac[2], hdr->src_mac[3], hdr->src_mac[4], hdr->src_mac[5]);
+        if (hdr->ether_type >= 1536) {
+            printf("ether_type: %d: %s\n", ntohs(hdr->ether_type), getEtherTypeName(ntohs(hdr->ether_type)));
+        }
     }
 }

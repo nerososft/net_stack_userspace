@@ -1,5 +1,6 @@
 executable("net") {
   sources = [ 
+    "net/src/ether.c",
     "net/src/main.c",
   ]
   libs = []

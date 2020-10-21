@@ -1,6 +1,6 @@
 #include "../include/ether.h"
 
-const char *getEtherTypeName(ether_type type) {
+const char *getEtherTypeName(EtherType type) {
     switch (type) {
         case ETHER_TYPE_IPV4:
             return "Internet Protocol version 4 (IPv4)";

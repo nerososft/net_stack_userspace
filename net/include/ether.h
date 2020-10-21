@@ -1,4 +1,4 @@
-typedef enum ether_type{
+typedef enum EtherType{
   ETHER_TYPE_IPV4= 0x0800,  //	Internet Protocol version 4 (IPv4)
   ETHER_TYPE_ARP= 0x0806,  //	Address Resolution Protocol (ARP)
   ETHER_TYPE_LAN= 0x0842,  //	Wake-on-LAN[9]
@@ -54,13 +54,13 @@ typedef enum ether_type{
   ETHER_TYPE_ECTP= 0x9000,  //	Ethernet Configuration Testing Protocol[12]
   ETHER_TYPE_VLAN_D_T= 0x9100,  //	VLAN-tagged (IEEE 802.1Q) frame with double tagging
   ETHER_TYPE_REDUNDANCY_TAG= 0xF1C1,  //	Redundancy Tag (IEEE 802.1CB Frame Replication and Elimination for Reliability)
-} ether_type;
+} EtherType;
 
-const char* getEtherTypeName(ether_type type);
+const char* getEtherTypeName(EtherType type);
 
-typedef struct eth_hdr{
-    unsigned char dest_mac[6];
-    unsigned char src_mac[6];
-    unsigned short int ether_type;
+typedef struct EtherHeader{
+    unsigned char destnationMac[6];
+    unsigned char sourceMac[6];
+    unsigned short int etherType;
     unsigned char payload[];
-} __attribute__((packed)) eth_hdr;
+} __attribute__((packed)) EtherHeader;

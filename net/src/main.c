@@ -79,7 +79,7 @@ int main() {
                     printIpV4(ntohl(arpv4->senderIp));
                     arp->operation = 2;
 
-                    ssize_t result = write(fd, buf, (ssize_t) nbytes);
+                    ssize_t result = write(fd, buf, (unsigned) nbytes);
                     if (result == -1) {
                         printf("arp response failed: %s \n", strerror(errno));
                     }
